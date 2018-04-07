@@ -1,0 +1,29 @@
+<div class="login-container">
+    <div class="container background-container login-form">
+        <div class="form-logo">
+            <span class="glyphicon glyphicon-asterisk"></span>
+            <span class="logo-header">Flatkit</span>
+        </div>
+        <div class="form-caption">
+            <span class="logo-header">Sign in</span>
+        </div>
+        <form [formGroup]="form" novalidate (ngSubmit)="login()">
+            <div class="bg-danger" *ngIf="form.errors">
+                The username or password are not valid
+            </div>
+            <div [sc-attr]="'form-group'" *ngFor="let control of form.loginControls">
+                <input formControlName="{{control.modelProperty}}" [(ngModel)]="userModel[control.modelProperty]" placeholder="{{control.placeHolder}}" type="{{control.type}}" class="form-control">
+                <ul class="text-danger" 
+                    *ngIf="(formSubmitted || control.dirty) && control.invalid">
+                    <li *ngFor="let error of control.getValidationMessages()">
+                        {{error}}
+                    </li>
+                </ul>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox"> Remember me</label>
+            </div>
+            <button type="submit" class="btn btn-default">Login</button>
+        </form>
+    </div>
+</div>

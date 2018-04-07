@@ -1,0 +1,136 @@
+<layout>
+      <div class="row short-user-info">
+        <div class="col-lg-4 info-item">
+          <div class="content-wrapper">
+              <span class="chart-info-header">Projects monitor</span>
+              <span class="aside-menu">GHJGHJGHJ</span>
+            <div>
+              <p>Calculated in last 30 days.</p>
+            </div>
+            <chart #groupsChart [options]="groupsOptions" (load)="saveGroupsInstance($event.context)"></chart>
+          </div>
+        </div>
+        <div class="col-lg-4 info-item">
+          <div class="content-wrapper">
+              <span class="chart-info-header">Projects monitor</span>
+              <span class="aside-menu">GHJGHJGHJ</span>
+            <div>
+              <p>Calculated in last 30 days.</p>
+            </div>
+            <chart #agentsChart [options]="agentsOptions" (load)="saveAgentsInstance($event.context)"></chart>
+          </div>
+        </div>
+        <div class="col-lg-4 info-item">
+          <div class="content-wrapper">
+              <span class="chart-info-header">Projects monitor</span>
+              <span class="aside-menu">GHJGHJGHJ</span>
+            <div>
+              <p>Calculated in last 30 days.</p>
+            </div>
+            <chart #callsChart [options]="callsOptions" (load)="saveCallsInstance($event.context)"></chart>
+          </div>
+        </div>        
+      </div>
+      <div class="row short-user-info">
+        <div class="col-lg-6 info-item">
+          <div class="content-wrapper">
+            <span class="chart-info-header">Active clients</span>
+            <span class="label label-warning">23</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+        </div>
+        <div class="col-lg-6 info-item">
+          <div class="content-wrapper">
+            <span class="chart-info-header">Active agents</span>
+            <span class="label label-success">65</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+          <div class="content-wrapper list-info">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="header">
+              <span><b>Broadcast web app mockup</b></span>
+              <div>
+                <p><b>6</b> tasks, <b>3</b> issues</p>
+              </div>
+            </span>
+            <span class="glyphicon glyphicon-pencil manage-icon"></span>
+            <span class="manage-icon">Manage</span>
+          </div>
+        </div>
+      </div>
+    </layout>

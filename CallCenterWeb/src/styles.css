@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+
+* { 
+    vertical-align: baseline; 
+    font-weight: inherit; 
+    font-family: inherit; 
+    font-style: inherit; 
+    font-size: 100%; 
+    border: 0 none; 
+    outline: 0; 
+    padding: 0; 
+    margin: 0;
+  }
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.example-container {
+  width: 100%;
+  height: 100%;
+}
+.sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav {
+  padding: 20px;
+}
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
