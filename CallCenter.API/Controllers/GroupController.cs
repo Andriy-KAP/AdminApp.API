@@ -3,6 +3,7 @@ using CallCenter.API.Models;
 using CallCenter.API.Response;
 using CallCenter.BLL.Core;
 using CallCenter.BLL.DTO;
+using CallCenter.DAL.Core;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,11 +12,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CallCenter.API.Controllers
 {
     //[Authorize]
     [RoutePrefix("api/Group")]
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class GroupController: ApiController
     {
         private IGroupService groupService;
@@ -30,11 +33,9 @@ namespace CallCenter.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetGroupsCollection()
         {
-            var identity = User.Identity as ClaimsIdentity;
-            var context = RequestContext;
             var groups = await groupService.GetGroups();
-            List<GroupModel> groupsDTO = mapper.Map<List<GroupDTO>, List<GroupModel>>(groups.ToList());
-            return Ok(new ResponseSheme(groups, "Ok", 200));
+            List<GroupModel> groupsDTO = mapper.Map<List<GroupDTO>, List<GroupModel>>(groups);
+            return Ok(new ResponseSheme(groups, "Ok", 200, groups.Count()));
         }
 
         [HttpPost]

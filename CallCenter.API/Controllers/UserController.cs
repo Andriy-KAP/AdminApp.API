@@ -45,10 +45,20 @@ namespace CallCenter.API.Controllers
             return InternalServerError();
         }
 
-        [HttpGet]
-        public HttpResponseMessage Created()
+        [HttpPost]
+        public async Task<IHttpActionResult> Edit(UserModel user)
         {
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            var userDto = mapper.Map<UserModel, UserDTO>(user);
+            await userService.Edit(userDto);
+
+            return Ok(new ResponseSheme(null, "EverythingOk", 200));
+        }
+        
+        [HttpPost]
+        public async Task<IHttpActionResult> Remove(UserModel user)
+        {
+            await userService.Delete(user.Id);
+            return Ok(new ResponseSheme(null, "EverythingOk", 200));
         }
     }
 }

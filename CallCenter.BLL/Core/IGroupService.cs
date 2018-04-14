@@ -1,4 +1,5 @@
 ﻿using CallCenter.BLL.DTO;
+using CallCenter.DAL.Core;
 using CallCenter.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace CallCenter.BLL.Core
 {
     public interface IGroupService
     {
-        Task<IEnumerable<GroupDTO>> GetGroups();
+        Task<List<GroupDTO>> GetGroups();
         Task<IEnumerable<GroupDTO>> GetUserGroups(int groupId);
         Task CreateGroup(GroupDTO group);
         Task UpdateGroup(GroupDTO group);

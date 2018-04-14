@@ -7,6 +7,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.Generic;
+using CallCenter.DAL.Extensions;
 
 namespace CallCenter.BLL.Services
 {
@@ -21,10 +22,10 @@ namespace CallCenter.BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<GroupDTO>> GetGroups()
+        public async Task<List<GroupDTO>> GetGroups()
         {
             var groups = await groupRepository.GetAll().ToListAsync();
-            var result = mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
+            var result = mapper.Map<List<Group>, List<GroupDTO>>(groups);
             return result;
         }
 

@@ -16,9 +16,9 @@ namespace CallCenter.DAL.Models
         [Required]
         public string HashedPassword { get; set; }
 
-        public virtual Group Group { get; set; }
+        public Group Group { get; set; }
         public int GroupId { get; set; }
 
-        public virtual ICollection<Sale> Sales { get; set; }
+        public ICollection<Sale> Sales { get; set; }
     }
 }

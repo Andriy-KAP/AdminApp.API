@@ -10,6 +10,7 @@ using System.Data.Entity;
 using CallCenter.BLL.DTO;
 using AutoMapper;
 using CallCenter.DAL.Extensions;
+using System.Linq.Expressions;
 
 namespace CallCenter.BLL.Services
 {
@@ -36,15 +37,19 @@ namespace CallCenter.BLL.Services
             await SaveChanges();
         }
 
-        public async Task Edit(User user)
+        public async Task Edit(UserDTO user)
         {
-            userRepository.Edit(user);
+            var targetUser = mapper.Map<UserDTO, User>(user);
+            userRepository.Edit(targetUser);
             await SaveChanges();
         }
 
         public async Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize)
         {
-            var users = await userRepository.GetAll().ToPaginatedList(pageIndex, pageSize , _=>_.Email);
+            Expression<Func<User, object>> groupIncluding = c => c.Group;
+            //Expression<Func<User, object>> filter1 = c => c.Group.Sales;
+            //Expression<Func<User, object>> filter2 = c => c.Sales;
+            var users = await userRepository.AllIncluding(groupIncluding).ToPaginatedList(pageIndex, pageSize , _=>_.Email);
             var mappedData = mapper.Map<PaginatedList<User>, PaginatedList<UserDTO>>(users);
             return mappedData;
         }

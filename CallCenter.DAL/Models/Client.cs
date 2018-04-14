@@ -15,6 +15,6 @@ namespace CallCenter.DAL.Models
         public string PhoneNumber { get; set; }
 
         public int? SaleId { get; set; }
-        public virtual Sale Sale { get; set; }
+        public Sale Sale { get; set; }
     }
 }

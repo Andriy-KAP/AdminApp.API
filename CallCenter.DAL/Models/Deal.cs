@@ -13,9 +13,9 @@ namespace CallCenter.DAL.Models
         public decimal Amount { get; set; }
 
         public int? SaleId { get; set; }
-        public virtual Sale Sale { get; set; }
+        public Sale Sale { get; set; }
 
         public int? ClientId { get; set; }
-        public virtual Client Client { get; set; }
+        public Client Client { get; set; }
     }
 }

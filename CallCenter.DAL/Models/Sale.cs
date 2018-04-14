@@ -12,8 +12,8 @@ namespace CallCenter.DAL.Models
         public string Name { get; set; }
 
         public int? GroupId { get; set; }
-        public virtual Group Group { get; set; }
+        public Group Group { get; set; }
 
-        public virtual ICollection<Client> Clients { get; set; }
+        public ICollection<Client> Clients { get; set; }
     }
 }

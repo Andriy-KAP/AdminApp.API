@@ -52,7 +52,9 @@ namespace CallCenter.API.App_Start
         private static IMapper AutoMapper(Ninject.Activation.IContext context)
         {
             Mapper.Initialize(c => {
-                c.CreateMap<User, UserDTO>(MemberList.None);
+                c.CreateMap<User, UserDTO>(MemberList.None)
+                    .ForMember(_=>_.GroupName, group=>group.MapFrom(_=>_.Group.Name));
+                c.CreateMap<UserDTO, User>(MemberList.None);
                 c.CreateMap<UserDTO, UserModel>(MemberList.None);
                 c.CreateMap<UserModel, UserDTO>(MemberList.None);
                 c.CreateMap<GroupModel, GroupDTO>(MemberList.None);

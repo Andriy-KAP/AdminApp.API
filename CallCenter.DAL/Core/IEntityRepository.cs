@@ -11,7 +11,7 @@ namespace CallCenter.DAL.Core
     {
         //CallCenterContext Context { get; set; }
 
-        Task<IQueryable<T>> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> GetAll();
         Task<T> GetSingle(Guid key);
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);

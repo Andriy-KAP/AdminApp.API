@@ -11,7 +11,7 @@ namespace CallCenter.BLL.Core
     {
         Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize);
         Task Create(User user);
-        Task Edit(User user);
+        Task Edit(UserDTO user);
         Task Delete(int id);
     }
 }

@@ -33,18 +33,14 @@ namespace CallCenter.DAL.Core
             context.Set<T>().Add(entity);
         }
 
-        public async Task<IQueryable<T>> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        public IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
-            var result = await Task.Run(() =>
+            IQueryable<T> query = context.Set<T>();
+            foreach (var includeProperty in includeProperties)
             {
-                IQueryable<T> query = context.Set<T>();
-                foreach (var includeProperty in includeProperties)
-                {
-                    query = query.Include(includeProperty);
-                }
-                return query;
-            });
-            return result;
+                query = query.Include(includeProperty);
+            }
+            return query;
         }
 
         public void Delete(int id)
@@ -57,6 +53,7 @@ namespace CallCenter.DAL.Core
         {
             DbEntityEntry entry = context.Entry<T>(entity);
             entry.State = EntityState.Modified;
+            //context.Entry<T>(entity).CurrentValues.SetValues(entity);
         }
 
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
