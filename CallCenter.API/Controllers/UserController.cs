@@ -23,19 +23,19 @@ namespace CallCenter.API.Controllers
     public class UserController : ApiController
     {
         private IUserService userService;
+        private ICryptoService cryptoService;
         private IMapper mapper;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService, ICryptoService cryptoService, IMapper mapper)
         {
             this.userService = userService;
+            this.cryptoService = cryptoService;
             this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IHttpActionResult> GetUserCollection([FromUriAttribute] PaginationModel pagination)
         {
-            var t = HttpContext.Current;
-
             var users =  await userService.GetUsers(pagination.PageIndex, pagination.PageSize);
             var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
             if(users != null)
@@ -59,6 +59,20 @@ namespace CallCenter.API.Controllers
         {
             await userService.Delete(user.Id);
             return Ok(new ResponseSheme(null, "EverythingOk", 200));
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Create(UserModel model)
+        {
+            var targetUser = mapper.Map<UserModel, UserDTO>(model);
+            targetUser.HashedPassword = cryptoService.EncryptPassword(model.Password);
+            var newUser = await userService.Create(targetUser);
+            
+            if(newUser != null)
+            {
+                return Ok(new ResponseSheme(newUser, "EverythingOk", 200));
+            }
+            return InternalServerError();
         }
     }
 }

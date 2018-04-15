@@ -31,7 +31,7 @@ namespace CallCenter.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> GetGroupsCollection()
+        public async Task<IHttpActionResult> GetGroupsCollection([FromUri]PaginationModel pagination)
         {
             var groups = await groupService.GetGroups();
             List<GroupModel> groupsDTO = mapper.Map<List<GroupDTO>, List<GroupModel>>(groups);

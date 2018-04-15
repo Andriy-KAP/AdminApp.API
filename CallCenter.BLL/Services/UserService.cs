@@ -25,10 +25,14 @@ namespace CallCenter.BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task Create(User user)
+        public async Task<UserDTO> Create(UserDTO user)
         {
-            userRepository.Add(user);
+            var targetUser = mapper.Map<UserDTO, User>(user);
+            userRepository.Add(targetUser);
             await SaveChanges();
+            var addedUser = await userRepository.FindBy(_ => _.Email == user.Email).ToListAsync();
+
+            return mapper.Map<User, UserDTO>(addedUser.FirstOrDefault());
         }
 
         public async Task Delete(int id)

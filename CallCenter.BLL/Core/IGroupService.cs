@@ -11,7 +11,7 @@ namespace CallCenter.BLL.Core
 {
     public interface IGroupService
     {
-        Task<List<GroupDTO>> GetGroups();
+        Task<PaginatedList<GroupDTO>> GetGroups(int pageIndex, int pageSize);
         Task<IEnumerable<GroupDTO>> GetUserGroups(int groupId);
         Task CreateGroup(GroupDTO group);
         Task UpdateGroup(GroupDTO group);

@@ -22,10 +22,10 @@ namespace CallCenter.BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<GroupDTO>> GetGroups()
+        public async Task<PaginatedList<GroupDTO>> GetGroups(int pageIndex, int pageSize)
         {
-            var groups = await groupRepository.GetAll().ToListAsync();
-            var result = mapper.Map<List<Group>, List<GroupDTO>>(groups);
+            var groups = await groupRepository.GetAll().ToPaginatedList(pageIndex, pageIndex, _=>_.Name);
+            var result = mapper.Map<PaginatedList<Group>, PaginatedList<GroupDTO>>(groups);
             return result;
         }
 
