@@ -9,7 +9,7 @@ namespace CallCenter.BLL.Core
 {
     public interface IUserService
     {
-        Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize);
+        Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize, int groupId);
         Task<UserDTO> Create(UserDTO user);
         Task Edit(UserDTO user);
         Task Delete(int id);

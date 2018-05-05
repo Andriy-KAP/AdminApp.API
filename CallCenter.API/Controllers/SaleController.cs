@@ -13,7 +13,7 @@ using System.Web.Http;
 
 namespace CallCenter.API.Controllers
 {
-    public class SaleController : ApiController
+    public class SaleController : ControllerBase
     {
         private ISaleService saleService;
         private IMapper mapper;

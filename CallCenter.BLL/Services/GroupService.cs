@@ -24,7 +24,7 @@ namespace CallCenter.BLL.Services
 
         public async Task<PaginatedList<GroupDTO>> GetGroups(int pageIndex, int pageSize)
         {
-            var groups = await groupRepository.GetAll().ToPaginatedList(pageIndex, pageIndex, _=>_.Name);
+            var groups = await groupRepository.GetAll().ToPaginatedList(pageIndex, pageSize, _=>_.Name);
             var result = mapper.Map<PaginatedList<Group>, PaginatedList<GroupDTO>>(groups);
             return result;
         }
@@ -43,10 +43,9 @@ namespace CallCenter.BLL.Services
             await groupRepository.Save();
         }
 
-        public async Task RemoveGroup(string name)
+        public async Task RemoveGroup(int id)
         {
-            var targetGroup = await groupRepository.FindBy(_ => _.Name == name).ToListAsync();
-            groupRepository.Delete(0);
+            groupRepository.Delete(id);
             await groupRepository.Save();
         }
 
@@ -55,6 +54,14 @@ namespace CallCenter.BLL.Services
             Group targetGroup = mapper.Map<GroupDTO, Group>(group);
             groupRepository.Edit(targetGroup);
             await groupRepository.Save();
+        }
+
+        public async Task<GroupDTO> GetGroupSales(GroupDTO group)
+        {
+            var groupModel =  await groupRepository.FindBy(_ => _.Id == group.Id).Include(_ => _.Sales).FirstOrDefaultAsync();
+            GroupDTO groupDto = mapper.Map<Group, GroupDTO>(groupModel);
+
+            return groupDto;
         }
     }
 }

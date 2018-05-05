@@ -20,7 +20,7 @@ namespace CallCenter.API.Controllers
 {
     [RoutePrefix("api/Account")]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    public class AccountController : ApiController
+    public class AccountController : ControllerBase
     {
         private IAuthService authService;
         private AutoMapper.IMapper mapper;

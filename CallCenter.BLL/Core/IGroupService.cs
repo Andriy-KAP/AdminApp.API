@@ -15,6 +15,7 @@ namespace CallCenter.BLL.Core
         Task<IEnumerable<GroupDTO>> GetUserGroups(int groupId);
         Task CreateGroup(GroupDTO group);
         Task UpdateGroup(GroupDTO group);
-        Task RemoveGroup(string name);
+        Task RemoveGroup(int id);
+        Task<GroupDTO> GetGroupSales(GroupDTO group);
     }
 }

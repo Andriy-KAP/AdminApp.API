@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -16,10 +17,10 @@ using System.Web.Http.Cors;
 
 namespace CallCenter.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/Group")]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    public class GroupController: ApiController
+    public class GroupController: ControllerBase
     {
         private IGroupService groupService;
         private IMapper mapper;
@@ -33,9 +34,9 @@ namespace CallCenter.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetGroupsCollection([FromUri]PaginationModel pagination)
         {
-            var groups = await groupService.GetGroups();
-            List<GroupModel> groupsDTO = mapper.Map<List<GroupDTO>, List<GroupModel>>(groups);
-            return Ok(new ResponseSheme(groups, "Ok", 200, groups.Count()));
+            var groups = await groupService.GetGroups(pagination.PageIndex, pagination.PageSize);
+            PaginatedList<GroupModel> mappedGroups = mapper.Map<PaginatedList<GroupDTO>, PaginatedList<GroupModel>>(groups);
+            return Ok(new ResponseSheme(mappedGroups, "EverythingOk", 200));
         }
 
         [HttpPost]
@@ -47,7 +48,7 @@ namespace CallCenter.API.Controllers
             return Ok(new ResponseSheme(null, "Ok", 200));
         }
 
-        [HttpPut]
+        [HttpPost]
         public IHttpActionResult UpdateGroup([FromBody]GroupModel group)
         {
             GroupDTO groupDTO = mapper.Map<GroupModel, GroupDTO>(group);
@@ -56,12 +57,21 @@ namespace CallCenter.API.Controllers
             return Ok(new ResponseSheme(null, "Ok", 200));
         }
 
-        [HttpDelete]
-        public IHttpActionResult RemoveGroup([FromUri]string name)
+        [HttpPost]
+        public IHttpActionResult RemoveGroup([FromBody]GroupModel group)
         {
-            groupService.RemoveGroup(name);
+            groupService.RemoveGroup(group.Id);
 
             return Ok(new ResponseSheme(null, "Ok", 200));
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGroupSales([FromUri]GroupModel group)
+        {
+            var mappedGroup = mapper.Map<GroupModel, GroupDTO>(group);
+            var groupSales = await groupService.GetGroupSales(mappedGroup);
+
+            return Ok(new ResponseSheme(groupSales, "EverythingIsOk", 200));
         }
     }
 }

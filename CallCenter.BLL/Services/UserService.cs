@@ -48,12 +48,12 @@ namespace CallCenter.BLL.Services
             await SaveChanges();
         }
 
-        public async Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize)
+        public async Task<PaginatedList<UserDTO>> GetUsers(int pageIndex, int pageSize, int officeId)
         {
             Expression<Func<User, object>> groupIncluding = c => c.Group;
             //Expression<Func<User, object>> filter1 = c => c.Group.Sales;
             //Expression<Func<User, object>> filter2 = c => c.Sales;
-            var users = await userRepository.AllIncluding(groupIncluding).ToPaginatedList(pageIndex, pageSize , _=>_.Email);
+            var users = await userRepository.AllIncluding(groupIncluding).Where(_=>_.GroupId == officeId).ToPaginatedList(pageIndex, pageSize , _=>_.Email);
             var mappedData = mapper.Map<PaginatedList<User>, PaginatedList<UserDTO>>(users);
             return mappedData;
         }

@@ -7,16 +7,11 @@ using System.Threading.Tasks;
 
 namespace CallCenter.DAL.Models
 {
-    public class Sale
+    public class Role
     {
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
-
-        public int? GroupId { get; set; }
-        public Group Group { get; set; }
-
-        public ICollection<Client> Clients { get; set; }
     }
 }

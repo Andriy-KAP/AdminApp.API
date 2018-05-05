@@ -16,6 +16,6 @@ namespace CallCenter.DAL.Extensions
             var collection = await query.OrderBy<T, TKey>(expression).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return new PaginatedList<T>(pageIndex, pageSize, query.Count(), collection);
-        }
+        } 
     }
 }

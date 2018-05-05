@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CallCenter.API.Models;
-using CallCenter.API.Providers;
 using CallCenter.BLL.Core;
 using CallCenter.BLL.DTO;
 using CallCenter.BLL.Infrastructure;
@@ -49,6 +48,7 @@ namespace CallCenter.API.App_Start
             return kernelInstance;
         }
 
+        //Automapper configuration
         private static IMapper AutoMapper(Ninject.Activation.IContext context)
         {
             Mapper.Initialize(c => {
@@ -70,9 +70,10 @@ namespace CallCenter.API.App_Start
 
             return Mapper.Instance;
         }
-            private static void RegisterServices(KernelBase kernel)
+
+        private static void RegisterServices(KernelBase kernel)
         {
-            kernel.Bind<SimpleAuthorizationServerProvider>().To<SimpleAuthorizationServerProvider>();
+            //kernel.Bind<SimpleAuthorizationServerProvider>().To<SimpleAuthorizationServerProvider>();
             kernel.Bind<IGroupService>().To<GroupService>();
             kernel.Bind<IAuthService>().To<AuthService>();
             kernel.Bind<IUserService>().To<UserService>();

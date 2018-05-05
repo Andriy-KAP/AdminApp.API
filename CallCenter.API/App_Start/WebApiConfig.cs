@@ -4,6 +4,7 @@ using CallCenter.API.Models;
 using CallCenter.BLL.DTO;
 using CallCenter.DAL.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Routing;
 
 namespace CallCenter.API
 {
@@ -32,7 +34,9 @@ namespace CallCenter.API
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            
 
+            //Adding token message handler
             config.MessageHandlers.Add(new TokenValidationHandler());
 
             //Enable reference loop for properties

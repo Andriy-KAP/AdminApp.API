@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -20,7 +22,7 @@ namespace CallCenter.API.Controllers
 {
     [Authorize]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    public class UserController : ApiController
+    public class UserController : ControllerBase
     {
         private IUserService userService;
         private ICryptoService cryptoService;
@@ -36,14 +38,18 @@ namespace CallCenter.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetUserCollection([FromUriAttribute] PaginationModel pagination)
         {
-            var r = new Int32();
-            var users =  await userService.GetUsers(pagination.PageIndex, pagination.PageSize);
-            var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
-            if(users != null)
+            int currentUserOfficeId = GetCurrentUserGroupId();
+            if(currentUserOfficeId != -1)
             {
-                return Ok(new ResponseSheme(mappedUsers, "EverythingOk", 200));
+                var users = await userService.GetUsers(pagination.PageIndex, pagination.PageSize, currentUserOfficeId);
+                var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
+                if (users != null)
+                {
+                    return Ok(new ResponseSheme(mappedUsers, "EverythingOk", 200));
+                }
+                return InternalServerError();
             }
-            return InternalServerError();
+            return InternalServerError(new Exception("Current user isn`t a member of any group."));
         }
 
         [HttpPost]

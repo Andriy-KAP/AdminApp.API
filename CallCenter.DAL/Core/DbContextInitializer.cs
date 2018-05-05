@@ -18,33 +18,54 @@ namespace CallCenter.DAL.Core
 
         protected override void Seed(CallCenterContext context)
         {
+            var roles = new List<Role>
+            {
+                new Role { Name="Admin"},
+                new Role { Name="Manager"}
+            };
+
+            foreach(var role in roles)
+            {
+                context.Roles.Add(role);
+            }
+
+            context.SaveChanges();
+
             var groups = new List<Group>
             {
                 new Group { Name= "Group1"},
                 new Group { Name= "Group2"}
+            };
+
+            //foreach (var group in groups)
+            //{
+            //    context.Groups.Add(group);
+            //}
+            //context.SaveChanges();
+
+            var offices = new List<Office>
+            {
+                new Office{ Name ="Office 1", Groups = new List<Group>{ new Group { Name= "Office 1 group1" }, new Group { Name = "Office 1 group2" } } },
+                new Office{ Name="Office 2", Groups = new List<Group>{ new Group { Name= "Office 2 group1" }, new Group { Name = "Office 2 group2" } }},
+                new Office{ Name="Office 3", Groups = new List<Group>{ new Group { Name= "Office 3 group1" }, new Group { Name = "Office 3 group2" } }},
+                new Office{ Name="Office 4", Groups = new List<Group>{ new Group { Name= "Office 4 group1" }, new Group { Name = "Office 4 group2" } }}
             }.ToArray();
 
-            for(int i = 0; i < 10; i++)
+            foreach (var office in offices)
+            {
+                context.Offices.Add(office);
+            }
+            context.SaveChanges();
+
+            for (int i = 0; i < 10; i++)
             {
                 var user = new User
                 {
                     Email = String.Format("user{0}@email.com", i),
                     HashedPassword = EncryptPassword(String.Format("qwerty{0}", i)),
-                    Group = i < 5 ? groups[0] : groups[1],
-                    Sales = new List<Sale>
-                    {
-                        new Sale {
-                            Name = String.Format("Sale{0}",i),
-                            Group = i<5 ? groups[0] : groups[1],
-                            Clients = new List<Client>
-                            {
-                                new Client {
-                                    Name = String.Format("Client{0}", i*2),
-                                    Email= String.Format("client{0}@email.com", i)
-                                }
-                            }
-                        }
-                    }
+                    Group = i % 2 == 0? context.Groups.Where(_=>_.Name == "Office 1 group1").FirstOrDefault(): context.Groups.Where(_ => _.Name == "Office 2 group2").FirstOrDefault(),
+                    //Office = i < 4 ? offices[i] : offices[0],
+                    Role = i < 2 ? roles[0] : roles[1]
                 };
                 context.Users.Add(user);
             }

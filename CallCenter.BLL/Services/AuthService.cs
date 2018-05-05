@@ -26,11 +26,15 @@ namespace CallCenter.BLL.DTO
 
         public async Task<string> Login(UserDTO userDTO)
         {
-            User user = await userRepository.FindBy(_=>_.Email == userDTO.Email).FirstOrDefaultAsync();
+            User user = await userRepository.FindBy(_=>_.Email == userDTO.Email)
+                .Include(_=>_.Group)
+                .Include(_=>_.Role)
+                .FirstOrDefaultAsync();
+
             string hashedPassword = cryptoService.EncryptPassword(userDTO.Password);
             if(user != null && user.HashedPassword == hashedPassword)
             {
-                string token = CreateToken(user.Email);
+                string token = CreateToken(user.Email, user.Role.Name, user.GroupId);
                 return token;
             }
             return null;
@@ -43,7 +47,7 @@ namespace CallCenter.BLL.DTO
             return targetUser != null ? true : false;
         }
 
-        private string CreateToken(string userEmail)
+        private string CreateToken(string userEmail, string role, int groupId)
         {
             //Set issued at date
             DateTime issueDate = DateTime.UtcNow;
@@ -55,7 +59,9 @@ namespace CallCenter.BLL.DTO
             //create a identity and add claims to the user which we want to log in
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, userEmail)
+                new Claim(ClaimTypes.Name, userEmail),
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.GroupSid, groupId.ToString())
             });
             const string sec = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
             var now = DateTime.UtcNow;

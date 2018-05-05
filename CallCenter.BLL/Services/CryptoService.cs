@@ -10,6 +10,7 @@ namespace CallCenter.BLL.Services
 {
     public class CryptoService : ICryptoService
     {
+        // TODO mb save salt in Database
         private const string salt = "2oSFVRKmlkKB2M3z9ErDjw==";
 
         public string EncryptPassword(string password)

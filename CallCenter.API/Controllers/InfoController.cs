@@ -16,7 +16,7 @@ namespace CallCenter.API.Controllers
 {
     [Authorize]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    public class InfoController : ApiController
+    public class InfoController : ControllerBase
     {
         private IMapper mapper;
         private IInfoService service;

@@ -13,12 +13,14 @@ namespace CallCenter.DAL.Models
         public int Id { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
         public string HashedPassword { get; set; }
 
         public Group Group { get; set; }
         public int GroupId { get; set; }
 
         public ICollection<Sale> Sales { get; set; }
+
+        public Role Role { get; set; }
+        public int? RoleId { get; set; }
     }
 }

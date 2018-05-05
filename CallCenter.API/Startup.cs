@@ -5,7 +5,6 @@ using Owin;
 using System.Web.Http;
 using CallCenter.DAL.Core;
 using Microsoft.Owin.Security.OAuth;
-using CallCenter.API.Providers;
 using Ninject;
 using Ninject.Web.Common.OwinHost;
 using CallCenter.API.App_Start;
@@ -15,6 +14,8 @@ using System.Net.Http.Formatting;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
 using CallCenter.API.Filters;
+using Microsoft.AspNet.SignalR;
+using Microsoft.Owin.Cors;
 
 [assembly: OwinStartup(typeof(CallCenter.API.Startup))]
 
@@ -22,13 +23,23 @@ namespace CallCenter.API
 {
     public class Startup
     {
-        [Inject]
-        public SimpleAuthorizationServerProvider authProvider { get; set; }
+        //[Inject]
+        //public SimpleAuthorizationServerProvider authProvider { get; set; }
 
         public void Configuration(IAppBuilder app)
         {
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
             HttpConfiguration config = GlobalConfiguration.Configuration;
+
+            app.Map("/signalr", map =>
+            {
+                map.UseCors(CorsOptions.AllowAll);
+                var hubConfiguration = new HubConfiguration
+                {
+                    //EnableJSONP = true
+                };
+                map.RunSignalR(hubConfiguration);
+            });
             //config.DependencyResolver = new OwinNinjectDependencyResolver(NinjectConfig.CreateKernel());
 
             WebApiConfig.Register(config);
@@ -38,27 +49,13 @@ namespace CallCenter.API
             //ConfigureOAuth(app);
 
             app.UseNinjectMiddleware(NinjectConfig.CreateKernel).UseNinjectWebApi(config);
+            //SignalR
             
+
             CallCenterContext.InitDb();
 
             GlobalConfiguration.Configuration.EnsureInitialized();
             
         }
-
-        //public void ConfigureOAuth(IAppBuilder app)
-        //{
-        //    OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
-        //    {
-        //        AllowInsecureHttp = true,
-        //        TokenEndpointPath = new PathString("/token"),
-        //        AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-        //        Provider = new SimpleAuthorizationServerProvider()
-        //    };
-
-        //    // Token Generation
-        //    app.UseOAuthAuthorizationServer(OAuthServerOptions);
-        //    app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-
-        //}
     }
 }
