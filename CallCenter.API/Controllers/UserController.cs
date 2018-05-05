@@ -36,6 +36,7 @@ namespace CallCenter.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetUserCollection([FromUriAttribute] PaginationModel pagination)
         {
+            var r = new Int32();
             var users =  await userService.GetUsers(pagination.PageIndex, pagination.PageSize);
             var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
             if(users != null)
