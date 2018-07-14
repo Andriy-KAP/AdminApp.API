@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CallCenter.API.Filters;
 using CallCenter.API.Models;
 using CallCenter.API.Response;
 using CallCenter.BLL.Core;
@@ -14,6 +15,7 @@ using System.Web.Http.Cors;
 
 namespace CallCenter.API.Controllers
 {
+    [ModelStateValidationFilter]
     [Authorize]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class InfoController : ControllerBase

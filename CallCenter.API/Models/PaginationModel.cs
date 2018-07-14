@@ -10,5 +10,6 @@ namespace CallCenter.API.Models
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int DataCount { get; set; }
+        public string Search { get; set; }
     }
 }

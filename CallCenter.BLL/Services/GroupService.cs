@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.Generic;
 using CallCenter.DAL.Extensions;
+using System;
+using System.Linq.Expressions;
 
 namespace CallCenter.BLL.Services
 {
@@ -22,9 +24,26 @@ namespace CallCenter.BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<PaginatedList<GroupDTO>> GetGroups(int pageIndex, int pageSize)
+        public async Task<PaginatedList<GroupDTO>> GetGroups(int pageIndex, int pageSize, int? groupId, string search)
         {
-            var groups = await groupRepository.GetAll().ToPaginatedList(pageIndex, pageSize, _=>_.Name);
+            string searchParam = search == null ? string.Empty : search;
+            Expression<Func<Group, object>> officeIncluding = o => o.Office;
+            PaginatedList<Group> groups = null;
+            var currentGroup = await groupRepository.FindBy(_ => _.Id == groupId).FirstOrDefaultAsync();
+            if(groupId != null)
+            {
+                groups = await groupRepository
+                    .FindBy(_ => _.OfficeId == currentGroup.OfficeId)
+                    .Where(_=>_.Name.Contains(searchParam) || _.Id.ToString().Contains(searchParam))
+                    .Include(_=>_.Office).ToPaginatedList(pageIndex, pageSize, _=>_.Name);
+            }
+            else
+            {
+                groups = await groupRepository
+                    .AllIncluding(_=>_.Office)
+                    .Where(_=>_.Name.Contains(searchParam) || _.Id.ToString().Contains(searchParam))
+                    .ToPaginatedList(pageIndex, pageSize, _ => _.Name);
+            }
             var result = mapper.Map<PaginatedList<Group>, PaginatedList<GroupDTO>>(groups);
             return result;
         }

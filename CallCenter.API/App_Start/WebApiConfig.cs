@@ -38,6 +38,17 @@ namespace CallCenter.API
 
             //Adding token message handler
             config.MessageHandlers.Add(new TokenValidationHandler());
+            //config.MessageHandlers.Insert(1, new HttpCachingHandler("Accept", "Accept-Charset"));
+            var eTagHandler = new HttpCachingHandler("Accept", "Accept-Charset");
+            eTagHandler.CacheInvalidationStore.Add(requestUri =>
+            {
+                if(requestUri.StartsWith("api/User/GetUserCollection", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return new[] { "api/User/GetUserCollection" };
+                }
+                return new string[0];
+            });
+            //config.MessageHandlers.Insert(0,eTagHandler);
 
             //Enable reference loop for properties
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Re‌​ferenceLoopHandling = ReferenceLoopHandling.Ignore;

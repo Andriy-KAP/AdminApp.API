@@ -14,6 +14,7 @@ namespace CallCenter.BLL.Infrastructure
             Bind<IEntityRepository<Group>>().To<EntityRepository<Group>>();
             Bind<IEntityRepository<User>>().To<EntityRepository<User>>();
             Bind<IEntityRepository<Sale>>().To<EntityRepository<Sale>>();
+            Bind<IEntityRepository<Client>>().To<EntityRepository<Client>>();
             Bind<ICryptoService>().To<CryptoService>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CallCenter.API.Filters;
 using CallCenter.API.Models;
 using CallCenter.API.Response;
 using CallCenter.BLL.Core;
@@ -17,6 +18,7 @@ using System.Web.Http.Cors;
 
 namespace CallCenter.API.Controllers
 {
+    [ModelStateValidationFilter]
     [Authorize]
     [RoutePrefix("api/Group")]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
@@ -34,7 +36,11 @@ namespace CallCenter.API.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetGroupsCollection([FromUri]PaginationModel pagination)
         {
-            var groups = await groupService.GetGroups(pagination.PageIndex, pagination.PageSize);
+            int currentUserGroupId = GetCurrentUserGroupId();
+            PaginatedList<GroupDTO> groups = null;
+            groups = (User.IsInRole("Admin")) ?
+                await groupService.GetGroups(pagination.PageIndex, pagination.PageSize, null, pagination.Search) :
+                await groupService.GetGroups(pagination.PageIndex, pagination.PageSize, currentUserGroupId, pagination.Search);
             PaginatedList<GroupModel> mappedGroups = mapper.Map<PaginatedList<GroupDTO>, PaginatedList<GroupModel>>(groups);
             return Ok(new ResponseSheme(mappedGroups, "EverythingOk", 200));
         }

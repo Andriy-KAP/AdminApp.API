@@ -91,21 +91,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\IAuthService.cs" />
+    <Compile Include="Core\IClientService.cs" />
     <Compile Include="Core\ICryptoService.cs" />
     <Compile Include="Core\IGroupService.cs" />
     <Compile Include="Core\IInfoService.cs" />
     <Compile Include="Core\ISaleService.cs" />
     <Compile Include="Core\IUserService.cs" />
+    <Compile Include="DTO\ClientDTO.cs" />
     <Compile Include="DTO\InfoDTO.cs" />
+    <Compile Include="DTO\OfficeDTO.cs" />
     <Compile Include="Services\AuthService.cs" />
     <Compile Include="DTO\GroupDTO.cs" />
     <Compile Include="DTO\SaleDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\BllNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientService.cs" />
     <Compile Include="Services\CryptoService.cs" />
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\InfoService.cs" />
+    <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\SaleService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>

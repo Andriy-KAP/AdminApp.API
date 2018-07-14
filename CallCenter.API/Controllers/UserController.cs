@@ -36,20 +36,39 @@ namespace CallCenter.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> GetUserCollection([FromUriAttribute] PaginationModel pagination)
+        public async Task<bool> IsUserExist(string username)
         {
-            int currentUserOfficeId = GetCurrentUserGroupId();
-            if(currentUserOfficeId != -1)
+            return await userService.IsUserExist(username);
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGlobalUserInfo()
+        {
+            var globalUserInfo = new
             {
-                var users = await userService.GetUsers(pagination.PageIndex, pagination.PageSize, currentUserOfficeId);
-                var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
-                if (users != null)
-                {
-                    return Ok(new ResponseSheme(mappedUsers, "EverythingOk", 200));
-                }
-                return InternalServerError();
-            }
-            return InternalServerError(new Exception("Current user isn`t a member of any group."));
+                AllUsersCount = await userService.GetUsersCount(),
+                AdminsCount = await userService.GetAdminsCount(),
+                ManagersCount = await userService.GetManagersCount()
+            };
+
+            return Ok(new ResponseSheme(globalUserInfo, "EverythingOk", 200));
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserCollection([FromUriAttribute] PaginationModel pagination)
+       {
+            int currentUserOfficeId = GetCurrentUserGroupId();
+            PaginatedList<UserDTO> users = null;
+
+            users = (User.IsInRole("Admin")) ?
+                await userService.GetUsers(pagination.PageIndex, pagination.PageSize, null, pagination.Search) :
+                await userService.GetUsers(pagination.PageIndex, pagination.PageSize, currentUserOfficeId, pagination.Search);
+
+            var mappedUsers = mapper.Map<PaginatedList<UserDTO>, PaginatedList<UserModel>>(users);
+
+            return (users != null) ? 
+                (IHttpActionResult) Ok(new ResponseSheme(mappedUsers, "EverythingOk", 200)) : 
+                InternalServerError();
         }
 
         [HttpPost]

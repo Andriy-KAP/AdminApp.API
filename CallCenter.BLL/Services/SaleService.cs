@@ -2,11 +2,13 @@
 using CallCenter.BLL.Core;
 using CallCenter.BLL.DTO;
 using CallCenter.DAL.Core;
+using CallCenter.DAL.Extensions;
 using CallCenter.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,11 +25,35 @@ namespace CallCenter.BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<SaleDTO>> GetSales()
+        public async Task<bool> IsSaleExist(string name)
         {
-            var sales = await salesRepository.GetAll().ToListAsync();
-            var result = mapper.Map<IEnumerable<Sale>, IEnumerable<SaleDTO>>(sales);
-            return result;
+            var sale = await salesRepository.FindBy(_ => _.Name == name).FirstOrDefaultAsync();
+            return (sale == null) ? false : true;
+        }
+
+        public async Task<PaginatedList<SaleDTO>> GetSales(int pageIndex, int pageSize, int? officeId, string search)
+        {
+            string searchParam = search == null ? string.Empty : search;
+            Expression<Func<Sale, object>> groupIncluding = c => c.Group;
+            Expression<Func<Sale, object>> managerIncluding = c => c.User;
+            PaginatedList<Sale> sales = null;
+            if (officeId != null)
+            {
+                sales = await salesRepository
+                    .AllIncluding(groupIncluding, managerIncluding)
+                    .Where(_ => _.GroupId == officeId)
+                    .Where(_ => _.Name.Contains(searchParam) || _.Group.Name.Contains(searchParam) || _.User.Email.Contains(searchParam))
+                    .ToPaginatedList(pageIndex, pageSize, _ => _.Name);
+            }
+            else
+            {
+                sales = await salesRepository
+                    .AllIncluding(groupIncluding, managerIncluding)
+                    .Where(_ => _.Name.Contains(searchParam) || _.Group.Name.Contains(searchParam) || _.User.Email.Contains(searchParam))
+                    .ToPaginatedList(pageIndex, pageSize, _ => _.Name);
+            }
+            var mappedData = mapper.Map<PaginatedList<Sale>, PaginatedList<SaleDTO>>(sales);
+            return mappedData;
         }
 
         public async Task<IEnumerable<SaleDTO>> GetUserSales(int groupId)

@@ -59,13 +59,20 @@ namespace CallCenter.DAL.Core
 
             for (int i = 0; i < 10; i++)
             {
+                var sale = new Sale
+                {
+                    Name="sale_user"+1,
+                    Group = i % 2 == 0 ? context.Groups.Where(_ => _.Name == "Office 1 group1").FirstOrDefault() : context.Groups.Where(_ => _.Name == "Office 2 group2").FirstOrDefault()
+                };
+
                 var user = new User
                 {
                     Email = String.Format("user{0}@email.com", i),
                     HashedPassword = EncryptPassword(String.Format("qwerty{0}", i)),
                     Group = i % 2 == 0? context.Groups.Where(_=>_.Name == "Office 1 group1").FirstOrDefault(): context.Groups.Where(_ => _.Name == "Office 2 group2").FirstOrDefault(),
                     //Office = i < 4 ? offices[i] : offices[0],
-                    Role = i < 2 ? roles[0] : roles[1]
+                    Role = i < 2 ? roles[0] : roles[1],
+                    Sales = new List<Sale> { sale }
                 };
                 context.Users.Add(user);
             }

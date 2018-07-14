@@ -5,11 +5,9 @@ using System.Web;
 
 namespace CallCenter.API.Models
 {
-    public class GroupModel
+    public class OfficeModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public OfficeModel Office { get; set; }
     }
 }
